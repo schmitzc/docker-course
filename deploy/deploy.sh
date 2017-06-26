@@ -1,12 +1,13 @@
 #!/bin/bash
 
 
-SERVER_IP="${SERVER_IP:-10.0.0.99}"
-SSH_USER="${SSH_USER:-$(whoami)}"
-KEY_USER="${KEY_USER:-$(whoami)}"
+SERVER_IP="${SERVER_IP:-192.168.33.10}"
+SSH_USER="${SSH_USER:-vagrant}"
+KEY_USER="${KEY_USER:-vagrant}"
 DOCKER_VERSION="${DOCKER_VERSION:-1.8.3}"
 
-DOCKER_PULL_IMAGES=("posgres:9.4.5" "redis:2.8.22")
+DOCKER_PULL_IMAGES=("postgres:9.4.5" "redis:2.8.22")
+
 
 function preseed_staging() {
 cat << EOF
