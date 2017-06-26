@@ -1,26 +1,17 @@
 #!/usr/bin/env bash
 
-REPO_NAME="mobydock"
+REPO_NAME="nginx"
 
 # Check out the newest version of the code.
-export GIT_WORK_TREE="/var/git/${REPO_NAME}"
+export GIT_WORK_TREE="/var/git/mobydock/${REPO_NAME}"
 git checkout -f
 
 TAG="$(git log --pretty=format:'%h' -n 1)"
 FULL_COMMIT_TAG="${REPO_NAME}:${TAG}"
 FULL_LATEST_TAG="${REPO_NAME}:latest"
 
-# Nginx
-
 # Build the image with the proper commit tag.
-docker build -t nginx:latest "${GIT_WORK_TREE}/deploy/nginx"
-
-echo "Restarting nginx"
-docker stop "nginx"
-# Webapp
-
-# Build the image with the proper commit tag.
-docker build -t "${FULL_LATEST_TAG}" "${GIT_WORK_TREE}/nginx"
+docker build -t "${FULL_LATEST_TAG}" "${GIT_WORK_TREE}"
 
 # Get the Docker ID of the last built image.
 DOCKER_ID="$(docker images -q ${REPO_NAME} | head -1)"
@@ -30,9 +21,6 @@ DOCKER_ID="$(docker images -q ${REPO_NAME} | head -1)"
 
 echo "Restarting ${REPO_NAME}"
 docker stop "${REPO_NAME}"
-
-# Build the image with the proper commit tag.
-docker build -t "${FULL_LATEST_TAG}" "${GIT_WORK_TREE}/flask"
 
 echo "Removing untagged Docker images (may take a while)"
 docker rmi $(docker images --quiet --filter "dangling=true")
