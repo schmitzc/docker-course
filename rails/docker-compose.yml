@@ -15,6 +15,17 @@ redis:
   volumes:
     - ~/.docker-volumes/mobydock/redis/data:/var/lib/redis/data
 
+sidekiq:
+  build: .
+  command: bundle exec sidekiq -C config/sidekiq.yml
+  links:
+    - postgres
+    - redis
+  volumes:
+    - .:/mobydock
+  env_file:
+    - mobydock.env
+
 mobydock:
   build: .
   links:

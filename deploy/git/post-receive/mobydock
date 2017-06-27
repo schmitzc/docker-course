@@ -10,14 +10,6 @@ TAG="$(git log --pretty=format:'%h' -n 1)"
 FULL_COMMIT_TAG="${REPO_NAME}:${TAG}"
 FULL_LATEST_TAG="${REPO_NAME}:latest"
 
-# Nginx
-
-# Build the image with the proper commit tag.
-docker build -t nginx:latest "${GIT_WORK_TREE}/deploy/nginx"
-
-echo "Restarting nginx"
-docker stop "nginx"
-
 # Webapp
 
 # Build the image with the proper commit tag.
@@ -29,8 +21,18 @@ DOCKER_ID="$(docker images -q ${REPO_NAME} | head -1)"
 # Tag a latest version based off a commit tag.
 #docker tag -f "${DOCKER_ID}" "${FULL_LATEST_TAG}"
 
+docker stop "sidekiq"
+
 echo "Restarting ${REPO_NAME}"
 docker stop "${REPO_NAME}"
 
+# Nginx
+
+# Build the image with the proper commit tag.
+docker build -t nginx:latest "${GIT_WORK_TREE}/deploy/nginx"
+
 echo "Removing untagged Docker images (may take a while)"
 docker rmi $(docker images --quiet --filter "dangling=true")
+
+echo "Restarting nginx"
+docker stop "nginx"

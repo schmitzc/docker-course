@@ -8,7 +8,7 @@ KEY_USER="${KEY_USER:-vagrant}"
 DOCKER_VERSION="${DOCKER_VERSION:-1.8.3}"
 
 DOCKER_PULL_IMAGES=("postgres:9.4.5" "redis:2.8.22")
-COPY_UNIT_FILES=("swap" "postgres" "redis" "mobydock" "nginx")
+COPY_UNIT_FILES=("swap" "postgres" "redis" "mobydock" "nginx" "sidekiq")
 SSL_CERT_BASE_NAME="${SSL_CERT_BASE_NAME:-productionexample}"
 
 
@@ -202,8 +202,8 @@ sudo chown root:root -R /etc/ssl
 function run_application () {
   echo "Running the application..."
   ssh -t "${SSH_USER}@${SERVER_IP}" bash -c "'
-sudo systemctl enable mobydock.service nginx.service
-sudo systemctl start mobydock.service nginx.service
+sudo systemctl enable mobydock.service nginx.service sidekiq.service
+sudo systemctl start mobydock.service nginx.service sidekiq.service
   '"
   echo "done!"
 }
