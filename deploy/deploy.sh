@@ -9,7 +9,7 @@ DOCKER_VERSION="${DOCKER_VERSION:-1.8.3}"
 
 DOCKER_PULL_IMAGES=("postgres:9.4.5" "redis:2.8.22")
 COPY_UNIT_FILES=("swap" "postgres" "redis" "mobydock" "nginx")
-SSL_CERT_BASE_NAME="productionexample"
+SSL_CERT_BASE_NAME="${SSL_CERT_BASE_NAME:-productionexample}"
 
 
 function preseed_staging() {

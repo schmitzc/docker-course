@@ -6,10 +6,12 @@ set -e
 CONFIG_PATH="/etc/nginx/conf.d/default.conf"
 STAGING_IP="192.168.33.10"
 STAGING_HOSTNAME="stagingserver"
-DOMAIN_NAME="productionexample.com"
+STAGING_CERT_BASE_NAME="productionexample"
+DOMAIN_NAME="mobydock.cassieschmitz.com"
 
 if [[ $(hostname) != "${STAGING_HOSTNAME}" ]]; then
   sed -i "s/${STAGING_IP}/${DOMAIN_NAME}/g" "${CONFIG_PATH}"
+  sed -i "s/${STAGING_CERT_BASE_NAME}/${DOMAIN_NAME}/g" "${CONFIG_PATH}"
 fi
 
 # Execute the CMD from the Dockerfile.
